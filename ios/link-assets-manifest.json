@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/NanumMyeongjo-Bold.ttf",
+      "sha1": "8baf69da80267531bcfdb1de2a1aa627202ec1f2"
+    },
+    {
+      "path": "assets/fonts/NanumMyeongjo-Regular.ttf",
+      "sha1": "3b43f237f492c0a689067d305f4cd208ad79f8ef"
+    },
+    {
+      "path": "assets/fonts/PlaywriteIS-Regular.ttf",
+      "sha1": "12e5202cc6b4faf775b532787ed4c4bd78f187d4"
+    },
+    {
+      "path": "assets/fonts/ReenieBeanie-Regular.ttf",
+      "sha1": "fa15da62fda095d2080b61ffdb058a86c0e90915"
+    }
+  ]
+}
