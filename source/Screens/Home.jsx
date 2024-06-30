@@ -7,40 +7,40 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  Image,
 } from 'react-native';
-import {Dialog, Portal, TextInput} from 'react-native-paper';
+import {Avatar, Dialog, Portal, TextInput} from 'react-native-paper';
 import {color} from '../Assets/ColorFile';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Task from '../Components/Task';
 import {useDispatch, useSelector} from 'react-redux';
-import {addTask} from '../redux/Action/Action';
+import {addTask, loadUser} from '../redux/Action/Action';
 import {clearError, clearMessage} from '../redux/reducer/Reducer';
 
 const windowHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('screen').width;
-
-
-
 export default function Home({navigation}) {
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setdescription] = useState('');
+  const [avatar, setavatar] = useState('');
 
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.auth);
-  // let task = user.task
-
-  const {loading, message, error } = useSelector(state => state.auth);
-  console.log('user' , user)
-  // console.log('task' , task)
-
-  const addtaskhandler = () => {
+  const {loading, message, error} = useSelector(state => state.task);
+  // console.log('user', user);
+  useEffect(() => {
+    setavatar(user.avatar.url);
+  }, []);
+  const addtaskhandler = async () => {
     console.log(title, description);
-    dispatch(addTask(title, description));
+    await dispatch(addTask(title, description));
     console.log('press');
+    hideDialog();
+    dispatch(loadUser());
   };
 
   useEffect(() => {
@@ -60,12 +60,24 @@ export default function Home({navigation}) {
       <View style={[styles.MainContainere]}>
         <View style={styles.header}>
           <View style={styles.headerContainer}>
-            <Text style={styles.headertxt}>Hi 👋 Ashish kanojia</Text>
+            <Text style={styles.headertxt}>Hi 👋 {user.name}</Text>
             <Text style={styles.headertxt}>Welcome To TaskMate</Text>
           </View>
           <TouchableOpacity
             style={styles.profileContainer}
-            onPress={() => navigation.navigate('profile')}></TouchableOpacity>
+            onPress={() => navigation.navigate('profile')}>
+            <Avatar.Image
+              size={50}
+              source={{uri: avatar ? avatar : null}}
+              style={{
+                backgroundColor: color.bgColor,
+                borderColor: color.txtColor,
+                borderWidth: 1,
+                marginBottom: '5%',
+                marginTop: '15%',
+              }}
+            />
+          </TouchableOpacity>
         </View>
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -75,24 +87,12 @@ export default function Home({navigation}) {
               key={item._id}
               title={item.title}
               description={item.description}
-              taskid={item._id}
+              taskId={item._id}
               status={item.status}
               date={item.createdAt}
             />
           )}
         />
-
-        {/* {task &&
-          task.task.map((item) => (
-            <Task
-              key={item._id}
-              title={item.title}
-              description={item.description}
-              taskid={item._id}
-              status={item.status}
-              date={item.date}
-            />
-          ))} */}
         <TouchableOpacity style={styles.editTask} onPress={showDialog}>
           <FontAwesome6 name="plus" size={40} color="#fff" />
         </TouchableOpacity>
@@ -150,11 +150,12 @@ const styles = StyleSheet.create({
   profileContainer: {
     height: '90%',
     width: '12%',
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: '1%',
+    marginBottom:"1%"
   },
   headertxt: {
     color: color.txtColor,

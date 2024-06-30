@@ -1,14 +1,26 @@
 import axios from 'axios';
 import {
+  UpdateProfileFailure,
+  UpdateProfileRequest,
+  UpdateProfileSuccess,
   addTaskFailure,
   addTaskRequest,
   addTaskSuccess,
+  deleteTaskFailure,
+  deleteTaskRequest,
+  deleteTaskSuccess,
   loadUserFailure,
   loadUserRequest,
   loadUserSuccess,
   loginFailure,
   loginRequest,
   loginSuccess,
+  logoutFailure,
+  logoutRequest,
+  logoutSuccess,
+  updateTaskFailure,
+  updateTaskRequest,
+  updateTaskSuccess,
 } from '../reducer/Reducer';
 // import {useDispatch} from 'react-redux';
 
@@ -16,7 +28,7 @@ import {
 const serverURL = 'https://todo-server-mern.onrender.com/api/v1';
 
 export const loadUser = () => async dispatch => {
-  // function return anotjer function
+  // function return another function
   try {
     dispatch({type: loadUserRequest});
 
@@ -29,11 +41,6 @@ export const loadUser = () => async dispatch => {
     dispatch({type: loadUserFailure, payload: error.response.data.message});
   }
 };
-//
-//
-//  ADD NEW TASK
-//
-//
 
 export const addTask = (title, description) => async dispatch => {
   // function return anotjer function
@@ -74,9 +81,64 @@ export const login = (email, password) => async dispatch => {
     );
 
     // console.log('Data received from server:', data);
-
+    console.log('user login ka data kya mill raha hai', data);
     dispatch({type: loginSuccess, payload: data}); // Dispatch using imported constant
   } catch (error) {
     dispatch({type: loginFailure, payload: error.response.data.message});
+  }
+};
+
+export const updateTask = taskId => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: updateTaskRequest});
+
+    const {data} = await axios.get(`${serverURL}/task/${taskId}`);
+
+    dispatch({type: updateTaskSuccess, payload: data.message});
+  } catch (error) {
+    dispatch({type: updateTaskFailure, payload: error.response.data.message});
+  }
+};
+export const deleteTask = taskId => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: deleteTaskRequest});
+
+    const {data} = await axios.delete(`${serverURL}/task/${taskId}`);
+
+    dispatch({type: deleteTaskSuccess, payload: data.message});
+  } catch (error) {
+    dispatch({type: deleteTaskFailure, payload: error.response.data.message});
+  }
+};
+export const UpdateProfile = formDate => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: UpdateProfileRequest});
+
+    const {data} = await axios.put(`${serverURL}/updateprofile`, formDate, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    });
+
+    dispatch({type: UpdateProfileSuccess, payload: data.message});
+  } catch (error) {
+    dispatch({
+      type: UpdateProfileFailure,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const logout = () => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: logoutRequest});
+
+     await axios.get(`${serverURL}/logout`);
+
+    dispatch({type: logoutSuccess});
+  } catch (error) {
+    dispatch({type: logoutFailure, payload: error.response.data.message});
   }
 };

@@ -2,73 +2,33 @@ import {createReducer} from '@reduxjs/toolkit';
 const initialState = {};
 
 console.log(initialState.isAuthenticated);
-/*
-
-
-
-const initialState = {
-loading = '',
-isAuthenticated = '',
-user:{}       // recived from payload
-message:'',
-error:'',
-};
-
-
-
-*/
-// export const authReducer = createReducer(initialState, {
-//   loginRequest: state => {
-//     state.loading = true;
-//   },
-//   loginSuccess: (state, action) => {
-//     //ACTION ME HAME USER KA DATA , MESSAGE OR SUCCESS MILL REHI HAI
-//     state.loading = false;
-//     state.isAuthenticated = true;
-//     state.user = action.payload.user;
-//     state.message = action.payload.message;
-//   },
-//   loginFailure: (state, action) => {
-//     state.loading = false;
-//     state.isAuthenticated = false;
-//     state.error = action.payload;
-//   },
-
-//   loadUserRequest: state => {
-//     state.loading = true;
-//   },
-//   loadUserSuccess: (state, action) => {
-//     state.loading = false;
-//     state.isAuthenticated = true;
-//     state.user = action.payload.user;
-//   },
-//   loadUserFailure: (state, action) => {
-//     state.loading = false;
-//     state.isAuthenticated = false;
-//     state.error = action.payload;
-//   },
-
-//   clearError: state => {
-//     state.error = null;
-//   },
-//   clearMessage: state => {
-//     state.message = null;
-//   },
-// });
 
 const clearError = 'clearError';
 const clearMessage = 'clearMessage';
 const loginSuccess = 'loginSuccess';
 const loginRequest = 'loginRequest';
+const logoutFailure = 'logoutFailure';
+const logoutSuccess = 'logoutSuccess';
+const logoutRequest = 'logoutRequest';
+const loginFailure = 'loginFailure';
 const addTaskRequest = 'addTaskRequest';
 const addTaskFailure = 'addTaskFailure';
 const addTaskSuccess = 'addTaskSuccess';
-const loginFailure = 'loginFailure';
 const loadUserRequest = 'loadUserRequest';
 const loadUserSuccess = 'loadUserSuccess';
 const loadUserFailure = 'loadUserFailure';
-
-
+const updateTaskFailure = 'updateTaskFailure';
+const updateTaskRequest = 'updateTaskRequest';
+const updateTaskSuccess = 'updateTaskSuccess';
+const deleteTaskFailure = 'deleteTaskFailure';
+const deleteTaskRequest = 'deleteTaskRequest';
+const deleteTaskSuccess = 'deleteTaskSuccess';
+const UpdateProfilePasswordRequest = 'UpdateProfilePasswordRequest';
+const UpdateProfilePasswordSuccess = 'UpdateProfilePasswordSuccess';
+const UpdateProfileProfileFailure = 'UpdateProfileProfileFailure';
+const UpdateProfileRequest = 'UpdateProfileRequest';
+const UpdateProfileFailure = 'UpdateProfileFailure';
+const UpdateProfileSuccess = 'UpdateProfileSuccess';
 
 export const authReducer = createReducer(initialState, builder => {
   builder
@@ -122,6 +82,63 @@ export const taskReducer = createReducer({}, builder => {
       state.loading = false;
       state.error = action.payload;
     })
+    .addCase(updateTaskRequest, state => {
+      state.loading = true;
+    })
+    .addCase(updateTaskSuccess, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase(updateTaskFailure, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(deleteTaskRequest, state => {
+      state.loading = true;
+    })
+    .addCase(deleteTaskSuccess, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase(deleteTaskFailure, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(UpdateProfileRequest, state => {
+      state.loading = true;
+    })
+    .addCase(UpdateProfileSuccess, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase(UpdateProfileFailure, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(UpdateProfilePasswordRequest, state => {
+      state.loading = true;
+    })
+    .addCase(UpdateProfilePasswordSuccess, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase(UpdateProfileProfileFailure, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(logoutRequest, state => {
+      state.loading = true;
+    })
+    .addCase(logoutSuccess, state => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.user = null;  
+    })
+    .addCase(logoutFailure, (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.error = action.payload;
+    })
 
     .addCase(clearError, state => {
       state.error = null;
@@ -135,6 +152,9 @@ export {
   loginRequest,
   loginSuccess,
   loginFailure,
+  logoutRequest,
+  logoutSuccess,
+  logoutFailure,
   loadUserRequest,
   loadUserSuccess,
   loadUserFailure,
@@ -143,4 +163,16 @@ export {
   addTaskFailure,
   addTaskSuccess,
   addTaskRequest,
+  updateTaskFailure,
+  updateTaskSuccess,
+  updateTaskRequest,
+  deleteTaskFailure,
+  deleteTaskRequest,
+  deleteTaskSuccess,
+  UpdateProfilePasswordRequest,
+  UpdateProfilePasswordSuccess,
+  UpdateProfileProfileFailure,
+  UpdateProfileRequest,
+  UpdateProfileFailure,
+  UpdateProfileSuccess,
 };
