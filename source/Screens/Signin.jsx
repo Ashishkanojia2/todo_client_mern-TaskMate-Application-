@@ -2,7 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {color} from '../Assets/ColorFile';
 import {Avatar, Text, TextInput} from 'react-native-paper';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {useDispatch} from 'react-redux';
+import {register} from '../redux/Action/Action';
+import { Mime } from 'mime';
 
 const windowHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('screen').width;
@@ -18,8 +20,21 @@ export default function Signup({navigation, route}) {
   const [password, setpassword] = useState('');
   const [avatar, setavatar] = useState('');
 
+  const dispatch = useDispatch();
   const registerHandler = () => {
     console.log(username, email, password, avatar);
+    const myform = new FormData();
+    // creating form
+    myform.append('name', name);
+    myform.append('email', email);
+    myform.append('password', password);
+    myform.append('avatar', {
+      uri: avatar,
+      type: Mime.getType(avatar),
+      name: avatar.split('/').pop(),
+    });
+    dispatch(register(myform));
+    dispatch(loadUser());
   };
 
   const Imagehandler = () => {

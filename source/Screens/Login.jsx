@@ -27,9 +27,6 @@ export default function Login({navigation}) {
 
   const {isAuthenticated, error, user} = useSelector(state => state.auth);
 
-
-
-
   useEffect(() => {
     if (error) {
       Alert.alert(error);
@@ -46,7 +43,6 @@ export default function Login({navigation}) {
     <View style={[styles.MainContainere]}>
       <Text style={styles.headertxt}>Login Your</Text>
       <Text style={styles.headertxt2}>Account</Text>
-
       <TextInput
         label="Email/UserName"
         value={username}
@@ -71,6 +67,16 @@ export default function Login({navigation}) {
             paddingVertical: '2%',
           }}>
           Login
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('forgotpassword')}>
+        <Text
+          style={{
+            fontSize: 15,
+            color: '#c9c9c9',
+            paddingVertical: '5%',
+          }}>
+          forgot password
         </Text>
       </TouchableOpacity>
       <Text style={styles.accountMSG}>

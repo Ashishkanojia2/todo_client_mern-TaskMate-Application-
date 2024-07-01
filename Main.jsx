@@ -12,6 +12,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loadUserRequest} from './source/redux/reducer/Reducer';
 import Loading from './source/Components/loader';
 import {loadUser} from './source/redux/Action/Action';
+import ForgotPassword from './source/Screens/ForgotPassword';
+import ChangePassword from './source/Screens/ChangePassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +55,16 @@ export default function Main() {
             <Stack.Screen
               name="camera"
               component={Camera}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="forgotpassword"
+              component={ForgotPassword}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="changePassword"
+              component={ChangePassword}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

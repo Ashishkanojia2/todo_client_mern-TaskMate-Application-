@@ -1,6 +1,9 @@
 import axios from 'axios';
 import {
   UpdateProfileFailure,
+  UpdateProfilePasswordRequest,
+  UpdateProfilePasswordSuccess,
+  UpdateProfilePasswordFailure,
   UpdateProfileRequest,
   UpdateProfileSuccess,
   addTaskFailure,
@@ -18,6 +21,9 @@ import {
   logoutFailure,
   logoutRequest,
   logoutSuccess,
+  registerFailure,
+  registerRequest,
+  registerSuccess,
   updateTaskFailure,
   updateTaskRequest,
   updateTaskSuccess,
@@ -135,10 +141,46 @@ export const logout = () => async dispatch => {
   try {
     dispatch({type: logoutRequest});
 
-     await axios.get(`${serverURL}/logout`);
+    await axios.get(`${serverURL}/logout`);
 
     dispatch({type: logoutSuccess});
   } catch (error) {
     dispatch({type: logoutFailure, payload: error.response.data.message});
+  }
+};
+
+export const register = formDate => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: registerRequest});
+
+    const {data} = await axios.post(`${serverURL}/register`, formDate, {
+      headers: {'Content-Type': 'multipart/form-data'},
+    });
+
+    dispatch({type: registerSuccess, payload: data.message});
+  } catch (error) {
+    dispatch({
+      type: registerFailure,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const UpdatePassword = (oldPassword, newPassword) => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: UpdateProfilePasswordRequest});
+
+    const {data} = await axios.put(`${serverURL}/updatepassword`, {oldPassword, newPassword}, {
+      headers: {'Content-Type': 'application/json'},
+    });
+
+    dispatch({type: UpdateProfilePasswordSuccess, payload: data.message});
+  } catch (error) {
+    dispatch({
+      type: UpdateProfilePasswordFailure,
+      payload: error.response.data.message,
+    });
   }
 };

@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {color} from '../Assets/ColorFile';
 import {Avatar, Text, TextInput} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
-import {loadUser, logout} from '../redux/Action/Action';
+import {UpdateProfile, loadUser, logout} from '../redux/Action/Action';
+import mime from 'mime'; // this told us file type
+import ChangePassword from './ChangePassword';
 
 const windowHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('screen').width;
 
-export default function Profile({navigation}) {
+export default function Profile({navigation, route}) {
   const dispatch = useDispatch();
 
   const {user} = useSelector(state => state.auth);
@@ -17,17 +19,40 @@ export default function Profile({navigation}) {
   const [avatar, setavatar] = useState(user.avatar.url);
 
   // console.log('kuch mila ',user);
+  useEffect(() => {
+    // this is for camera
+    if (route.params) {
+      if (route.params.photo.path) {
+        return setavatar(`file://${route.params.photo.path}`);
+      } else if (route.params.photo) {
+        // this is for taking photo from gallary
+        return setavatar(route.params.photo);
+      }
+    }
+  }, [route]);
 
   const updateProfileHandler = () => {
-    console.log('update ho raha hai');
+    // console.log('update ho raha hai');
+
+    const myform = new FormData();
+    // creating form
+    myform.append('name', name);
+    myform.append('avatar', {
+      uri: avatar,
+      type: mime.getType(avatar),
+      name: avatar.split('/').pop(),
+    });
+    dispatch(UpdateProfile(myform));
+    dispatch(loadUser())
   };
   const changePasswordHandler = () => {
     console.log('changePasswordHandler');
+    navigation.navigate('changePassword')
   };
   const logoutHandler = () => {
     console.log('logoutHandler');
     dispatch(logout());
-    dispatch(loadUser())
+    dispatch(loadUser());
   };
 
   return (
@@ -46,17 +71,21 @@ export default function Profile({navigation}) {
           marginTop: '15%',
         }}
       />
-      <Text
-        style={{
-          fontSize: 15,
-          color: 'gray',
-          paddingHorizontal: windowWidth / 5,
-          paddingVertical: '2%',
-          marginTop: '1%',
-          marginTop: '1%',
-        }}>
-        Change profile
-      </Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('camera', {profileValue: true})}>
+        <Text
+          style={{
+            fontSize: 15,
+            color: 'gray',
+            paddingHorizontal: windowWidth / 5,
+            paddingVertical: '2%',
+            marginTop: '1%',
+            marginTop: '1%',
+          }}>
+          Change profile
+        </Text>
+      </TouchableOpacity>
+
       <TextInput
         label="FullName"
         value={name}

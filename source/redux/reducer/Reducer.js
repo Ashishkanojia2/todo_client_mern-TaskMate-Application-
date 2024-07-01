@@ -7,28 +7,31 @@ const clearError = 'clearError';
 const clearMessage = 'clearMessage';
 const loginSuccess = 'loginSuccess';
 const loginRequest = 'loginRequest';
+const loginFailure = 'loginFailure';
 const logoutFailure = 'logoutFailure';
 const logoutSuccess = 'logoutSuccess';
 const logoutRequest = 'logoutRequest';
-const loginFailure = 'loginFailure';
 const addTaskRequest = 'addTaskRequest';
 const addTaskFailure = 'addTaskFailure';
 const addTaskSuccess = 'addTaskSuccess';
 const loadUserRequest = 'loadUserRequest';
 const loadUserSuccess = 'loadUserSuccess';
 const loadUserFailure = 'loadUserFailure';
+const registerRequest = 'registerRequest';
+const registerSuccess = 'registerSuccess';
+const registerFailure = 'registerFailure';
 const updateTaskFailure = 'updateTaskFailure';
 const updateTaskRequest = 'updateTaskRequest';
 const updateTaskSuccess = 'updateTaskSuccess';
 const deleteTaskFailure = 'deleteTaskFailure';
 const deleteTaskRequest = 'deleteTaskRequest';
 const deleteTaskSuccess = 'deleteTaskSuccess';
-const UpdateProfilePasswordRequest = 'UpdateProfilePasswordRequest';
-const UpdateProfilePasswordSuccess = 'UpdateProfilePasswordSuccess';
-const UpdateProfileProfileFailure = 'UpdateProfileProfileFailure';
 const UpdateProfileRequest = 'UpdateProfileRequest';
 const UpdateProfileFailure = 'UpdateProfileFailure';
 const UpdateProfileSuccess = 'UpdateProfileSuccess';
+const UpdateProfilePasswordSuccess = 'UpdateProfilePasswordSuccess';
+const UpdateProfilePasswordRequest = 'UpdateProfilePasswordRequest';
+const UpdateProfilePasswordFailure = 'UpdateProfilePasswordFailure';
 
 export const authReducer = createReducer(initialState, builder => {
   builder
@@ -115,24 +118,45 @@ export const taskReducer = createReducer({}, builder => {
       state.loading = false;
       state.error = action.payload;
     })
+
     .addCase(UpdateProfilePasswordRequest, state => {
       state.loading = true;
     })
     .addCase(UpdateProfilePasswordSuccess, (state, action) => {
       state.loading = false;
-      state.message = action.payload;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+      state.error = null; // Clear any previous error on success
     })
-    .addCase(UpdateProfileProfileFailure, (state, action) => {
+    .addCase(UpdateProfilePasswordFailure, (state, action) => {
       state.loading = false;
+      state.isAuthenticated = false;
       state.error = action.payload;
     })
+    .addCase(registerRequest, state => {
+      state.loading = true;
+    })
+    .addCase(registerSuccess, (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = true;
+      state.user = action.payload.user;
+      state.message = action.payload.message;
+      state.error = null; // Clear any previous error on success
+    })
+    .addCase(registerFailure, (state, action) => {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.error = action.payload;
+    })
+
     .addCase(logoutRequest, state => {
       state.loading = true;
     })
     .addCase(logoutSuccess, state => {
       state.loading = false;
       state.isAuthenticated = false;
-      state.user = null;  
+      state.user = null;
     })
     .addCase(logoutFailure, (state, action) => {
       state.loading = false;
@@ -171,8 +195,11 @@ export {
   deleteTaskSuccess,
   UpdateProfilePasswordRequest,
   UpdateProfilePasswordSuccess,
-  UpdateProfileProfileFailure,
+  UpdateProfilePasswordFailure,
   UpdateProfileRequest,
   UpdateProfileFailure,
   UpdateProfileSuccess,
+  registerFailure,
+  registerSuccess,
+  registerRequest,
 };
