@@ -9,7 +9,7 @@ import {
 } from 'react-native-vision-camera';
 
 export default function VisionCamera({navigation, route}) {
-  console.log('routes',route.params.profileValue);
+  // console.log('routes',route.params.profileValue);
   const {hasPermission, requestPermission} = useCameraPermission();
   const device = useCameraDevice('front');
   const cameraRef = useRef(null); // Corrected useRef

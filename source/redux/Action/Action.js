@@ -158,7 +158,7 @@ export const register = formDate => async dispatch => {
       headers: {'Content-Type': 'multipart/form-data'},
     });
 
-    dispatch({type: registerSuccess, payload: data.message});
+    dispatch({type: registerSuccess, payload: data});
   } catch (error) {
     dispatch({
       type: registerFailure,
@@ -180,7 +180,7 @@ export const UpdatePassword = (oldPassword, newPassword) => async dispatch => {
   } catch (error) {
     dispatch({
       type: UpdateProfilePasswordFailure,
-      payload: error.response.data.message,
+      payload: error.response.data,
     });
   }
 };

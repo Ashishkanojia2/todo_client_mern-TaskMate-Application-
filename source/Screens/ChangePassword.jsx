@@ -1,16 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Dimensions, TouchableOpacity} from 'react-native';
 import {color} from '../Assets/ColorFile';
-import {Avatar, Text, TextInput} from 'react-native-paper';
+import {Text, TextInput} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  UpdatePassword,
-  UpdateProfile,
-  loadUser,
-  logout,
-} from '../redux/Action/Action';
-import mime from 'mime'; // this told us file type
-import ChangePassword from './ChangePassword';
+import {UpdatePassword, login} from '../redux/Action/Action';
 
 const windowHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('screen').width;
@@ -20,13 +13,12 @@ export default function ChangePasswords({navigation, route}) {
 
   const {user} = useSelector(state => state.auth);
 
-  const [name, setname] = useState(user.name);
   const [oldPassword, setoldPassword] = useState('');
   const [newPassword, setnewPassword] = useState('');
   const [disableBtn, setDisableBtn] = useState(false);
 
-  const updateProfileHandler = () => {
-    dispatch(UpdatePassword(oldPassword, newPassword));
+  const updateProfileHandler = async () => {
+    await dispatch(UpdatePassword(oldPassword, newPassword));
   };
   useEffect(() => {
     if (!oldPassword || !newPassword) {
@@ -54,7 +46,9 @@ export default function ChangePasswords({navigation, route}) {
           onChangeText={text => setnewPassword(text)}
           style={styles.inputfield}
         />
-        <TouchableOpacity onPress={() => updateProfileHandler()} disabled={disableBtn}>
+        <TouchableOpacity
+          onPress={() => updateProfileHandler()}
+          disabled={disableBtn}>
           <Text
             style={{
               fontSize: 20,

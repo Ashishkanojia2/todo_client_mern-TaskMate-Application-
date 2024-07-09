@@ -5,7 +5,6 @@ import {Avatar, Text, TextInput} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {UpdateProfile, loadUser, logout} from '../redux/Action/Action';
 import mime from 'mime'; // this told us file type
-import ChangePassword from './ChangePassword';
 
 const windowHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('screen').width;
@@ -31,7 +30,7 @@ export default function Profile({navigation, route}) {
     }
   }, [route]);
 
-  const updateProfileHandler = () => {
+  const updateProfileHandler = async () => {
     // console.log('update ho raha hai');
 
     const myform = new FormData();
@@ -42,17 +41,21 @@ export default function Profile({navigation, route}) {
       type: mime.getType(avatar),
       name: avatar.split('/').pop(),
     });
-    dispatch(UpdateProfile(myform));
-    dispatch(loadUser())
+    await dispatch(UpdateProfile(myform));
+    dispatch(loadUser());
   };
   const changePasswordHandler = () => {
     console.log('changePasswordHandler');
-    navigation.navigate('changePassword')
+    navigation.navigate('changePassword');
   };
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     console.log('logoutHandler');
-    dispatch(logout());
+    await dispatch(logout());
     dispatch(loadUser());
+  };
+  const VerifyHandler = () => {
+    navigation.navigate('verifyUser');
+    console.log('verify account');
   };
 
   return (
@@ -85,7 +88,6 @@ export default function Profile({navigation, route}) {
           Change profile
         </Text>
       </TouchableOpacity>
-
       <TextInput
         label="FullName"
         value={name}
@@ -126,15 +128,40 @@ export default function Profile({navigation, route}) {
           style={{
             fontSize: 15,
             color: 'gray',
-            // borderColor: color.txtColor,
-            // borderWidth: 0.5,
-            // borderRadius: 10,
             textDecorationLine: 'underline',
             paddingHorizontal: windowWidth / 5,
             paddingVertical: '2%',
             marginTop: '3%',
           }}>
           Logout
+        </Text>
+      </TouchableOpacity>
+      {user.verified ? null : (
+        <TouchableOpacity onPress={() => VerifyHandler()}>
+          <Text
+            style={{
+              fontSize: 15,
+              color: '#aa9eec',
+              textDecorationLine: 'underline',
+              paddingHorizontal: windowWidth / 5,
+              paddingVertical: '2%',
+              marginTop: '3%',
+            }}>
+            Verify Account
+          </Text>
+        </TouchableOpacity>
+      )}
+      <TouchableOpacity onPress={() => VerifyHandler()}>
+        <Text
+          style={{
+            fontSize: 15,
+            color: '#aa9eec',
+            textDecorationLine: 'underline',
+            paddingHorizontal: windowWidth / 5,
+            paddingVertical: '2%',
+            marginTop: '3%',
+          }}>
+          Verify Account
         </Text>
       </TouchableOpacity>
     </View>
