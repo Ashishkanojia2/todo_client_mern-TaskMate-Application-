@@ -27,6 +27,9 @@ import {
   updateTaskFailure,
   updateTaskRequest,
   updateTaskSuccess,
+  UserVerifyRequest,
+  UserVerifySuccess,
+  UserVerifyFailure,
 } from '../reducer/Reducer';
 // import {useDispatch} from 'react-redux';
 
@@ -172,14 +175,39 @@ export const UpdatePassword = (oldPassword, newPassword) => async dispatch => {
   try {
     dispatch({type: UpdateProfilePasswordRequest});
 
-    const {data} = await axios.put(`${serverURL}/updatepassword`, {oldPassword, newPassword}, {
-      headers: {'Content-Type': 'application/json'},
-    });
+    const {data} = await axios.put(
+      `${serverURL}/updatepassword`,
+      {oldPassword, newPassword},
+      {
+        headers: {'Content-Type': 'application/json'},
+      },
+    );
 
     dispatch({type: UpdateProfilePasswordSuccess, payload: data.message});
   } catch (error) {
     dispatch({
       type: UpdateProfilePasswordFailure,
+      payload: error.response.data,
+    });
+  }
+};
+export const Userverification = otp => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: UserVerifyRequest});
+
+    const {data} = await axios.post(
+      `${serverURL}/verify`,
+      {otp},
+      {
+        headers: {'Content-Type': 'application/json'},
+      },
+    );
+
+    dispatch({type: UserVerifySuccess, payload: data.message});
+  } catch (error) {
+    dispatch({
+      type: UserVerifyFailure,
       payload: error.response.data,
     });
   }

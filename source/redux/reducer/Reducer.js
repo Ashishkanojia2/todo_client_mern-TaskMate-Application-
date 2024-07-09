@@ -32,6 +32,9 @@ const UpdateProfileSuccess = 'UpdateProfileSuccess';
 const UpdateProfilePasswordSuccess = 'UpdateProfilePasswordSuccess';
 const UpdateProfilePasswordRequest = 'UpdateProfilePasswordRequest';
 const UpdateProfilePasswordFailure = 'UpdateProfilePasswordFailure';
+const UserVerifyRequest = 'UserVerifyRequest';
+const UserVerifyFailure = 'UserVerifyFailure';
+const UserVerifySuccess = 'UserVerifySuccess';
 
 export const authReducer = createReducer(initialState, builder => {
   builder
@@ -62,6 +65,17 @@ export const authReducer = createReducer(initialState, builder => {
     .addCase(loadUserFailure, (state, action) => {
       state.loading = false;
       state.isAuthenticated = false;
+      state.error = action.payload;
+    })
+    .addCase(UserVerifyRequest, state => {
+      state.loading = true;
+    })
+    .addCase(UserVerifySuccess, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase(UserVerifyFailure, (state, action) => {
+      state.loading = false;
       state.error = action.payload;
     })
     .addCase(clearError, state => {
@@ -202,4 +216,7 @@ export {
   registerFailure,
   registerSuccess,
   registerRequest,
+  UserVerifyFailure,
+  UserVerifyRequest,
+  UserVerifySuccess,
 };

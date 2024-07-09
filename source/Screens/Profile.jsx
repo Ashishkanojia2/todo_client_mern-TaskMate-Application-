@@ -151,19 +151,6 @@ export default function Profile({navigation, route}) {
           </Text>
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={() => VerifyHandler()}>
-        <Text
-          style={{
-            fontSize: 15,
-            color: '#aa9eec',
-            textDecorationLine: 'underline',
-            paddingHorizontal: windowWidth / 5,
-            paddingVertical: '2%',
-            marginTop: '3%',
-          }}>
-          Verify Account
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 }
