@@ -1,19 +1,20 @@
-import { StyleSheet } from 'react-native';
-import React, { useEffect } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
+import {StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
 import Home from './source/Screens/Home';
 import Profile from './source/Screens/Profile';
 import Login from './source/Screens/Login';
 import Signin from './source/Screens/Signin';
 import Camera from './source/Screens/Camera';
-import { Provider } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import {Provider} from 'react-native-paper';
+import {useDispatch, useSelector} from 'react-redux';
 import Loading from './source/Components/loader';
-import { loadUser } from './source/redux/Action/Action';
+import {loadUser} from './source/redux/Action/Action';
 import ForgotPassword from './source/Screens/ForgotPassword';
 import ChangePassword from './source/Screens/ChangePassword';
 import VerifyUser from './source/Screens/VerifyUser';
+import ResetPassword from './source/Screens/ResetPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -70,6 +71,11 @@ export default function Main() {
             <Stack.Screen
               name="verifyUser"
               component={VerifyUser}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="resetpassword"
+              component={ResetPassword}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

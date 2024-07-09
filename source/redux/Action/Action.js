@@ -30,6 +30,12 @@ import {
   UserVerifyRequest,
   UserVerifySuccess,
   UserVerifyFailure,
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
+  forgotPasswordFailure,
+  ResetPasswordRequest,
+  ResetPasswordSuccess,
+  ResetPasswordFailure,
 } from '../reducer/Reducer';
 // import {useDispatch} from 'react-redux';
 
@@ -208,6 +214,48 @@ export const Userverification = otp => async dispatch => {
   } catch (error) {
     dispatch({
       type: UserVerifyFailure,
+      payload: error.response.data,
+    });
+  }
+};
+export const ForgotUserPassword = email => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: forgotPasswordRequest});
+
+    const {data} = await axios.post(
+      `${serverURL}/forgetpassword`,
+      {email},
+      {
+        headers: {'Content-Type': 'application/json'},
+      },
+    );
+
+    dispatch({type: forgotPasswordSuccess, payload: data.message});
+  } catch (error) {
+    dispatch({
+      type: forgotPasswordFailure,
+      payload: error.response.data,
+    });
+  }
+};
+export const resetPassword = (otp, newPassword) => async dispatch => {
+  // function return anotjer function
+  try {
+    dispatch({type: ResetPasswordRequest});
+
+    const {data} = await axios.put(
+      `${serverURL}/resetpassword`,
+      {otp, newPassword},
+      {
+        headers: {'Content-Type': 'application/json'},
+      },
+    );
+
+    dispatch({type: ResetPasswordSuccess, payload: data.message});
+  } catch (error) {
+    dispatch({
+      type: ResetPasswordFailure,
       payload: error.response.data,
     });
   }

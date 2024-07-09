@@ -35,6 +35,12 @@ const UpdateProfilePasswordFailure = 'UpdateProfilePasswordFailure';
 const UserVerifyRequest = 'UserVerifyRequest';
 const UserVerifyFailure = 'UserVerifyFailure';
 const UserVerifySuccess = 'UserVerifySuccess';
+const forgotPasswordFailure = 'forgotPasswordFailure';
+const forgotPasswordRequest = 'forgotPasswordRequest';
+const forgotPasswordSuccess = 'forgotPasswordSuccess';
+const ResetPasswordFailure = 'ResetPasswordFailure';
+const ResetPasswordRequest = 'ResetPasswordRequest';
+const ResetPasswordSuccess = 'ResetPasswordSuccess';
 
 export const authReducer = createReducer(initialState, builder => {
   builder
@@ -132,6 +138,28 @@ export const taskReducer = createReducer({}, builder => {
       state.loading = false;
       state.error = action.payload;
     })
+    .addCase(forgotPasswordRequest, state => {
+      state.loading = true;
+    })
+    .addCase(forgotPasswordSuccess, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase(forgotPasswordFailure, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(ResetPasswordRequest, state => {
+      state.loading = true;
+    })
+    .addCase(ResetPasswordSuccess, (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    })
+    .addCase(ResetPasswordFailure, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
 
     .addCase(UpdateProfilePasswordRequest, state => {
       state.loading = true;
@@ -219,4 +247,10 @@ export {
   UserVerifyFailure,
   UserVerifyRequest,
   UserVerifySuccess,
+  forgotPasswordFailure,
+  forgotPasswordSuccess,
+  forgotPasswordRequest,
+  ResetPasswordRequest,
+  ResetPasswordFailure,
+  ResetPasswordSuccess,
 };

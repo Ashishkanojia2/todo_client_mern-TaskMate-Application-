@@ -1,25 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
-  View,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
+    StyleSheet,
+    View,
+    Dimensions,
+    TouchableOpacity,
+    Alert,
 } from 'react-native';
-import {color} from '../Assets/ColorFile';
-import {ActivityIndicator, Text, TextInput} from 'react-native-paper';
-import {useDispatch, useSelector} from 'react-redux';
-import {ForgotUserPassword, login} from '../redux/Action/Action';
-import {clearError} from '../redux/reducer/Reducer';
+import { color } from '../Assets/ColorFile';
+import { ActivityIndicator, Text, TextInput } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetPassword } from '../redux/Action/Action';
+import { clearError } from '../redux/reducer/Reducer';
 
 const windowHeight = Dimensions.get('screen').height;
 const windowWidth = Dimensions.get('screen').width;
 
 const font1 = 'NanumMyeongjo-Bold';
 
-export default function ForgotPassword({navigation}) {
+export default function ResetPassword({navigation}) {
   const dispatch = useDispatch();
-  const [username, setusername] = useState('');
+  const [newpassword, setnewpassword] = useState('');
+  const [otp, setotp] = useState('');
 
   const {isAuthenticated, error, user} = useSelector(state => state.auth);
   const {loading} = useSelector(state => state.task);
@@ -31,23 +32,30 @@ export default function ForgotPassword({navigation}) {
     }
   }, [error, dispatch, Alert]);
 
-  const ForgetPasswordHandler = async () => {
-    await dispatch(ForgotUserPassword(username));
-    navigation.navigate('resetpassword');
+  const ResetPasswordHandler = async () => {
+    await dispatch(resetPassword(otp, newpassword));
+    navigation.navigate('login');
   };
 
   return (
     <View style={[styles.MainContainere]}>
-      <Text style={styles.headertxt}>Forgot Password</Text>
+      <Text style={styles.headertxt}>Reset Password</Text>
       <TextInput
-        label="Email/UserName"
-        value={username}
-        onChangeText={text => setusername(text)}
+        label="OTP"
+        value={otp}
+        onChangeText={text => setotp(text)}
+        style={styles.inputfield}
+        keyboardType='number-pad'
+      />
+      <TextInput
+        label="New Password"
+        value={newpassword}
+        onChangeText={text => setnewpassword(text)}
         style={styles.inputfield}
       />
 
       <TouchableOpacity
-        onPress={() => ForgetPasswordHandler()}
+        onPress={() => ResetPasswordHandler()}
         disabled={loading}>
         {loading ? (
           <ActivityIndicator animating={true} />
