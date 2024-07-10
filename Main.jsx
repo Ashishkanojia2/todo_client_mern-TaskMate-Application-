@@ -21,9 +21,9 @@ const Stack = createNativeStackNavigator();
 export default function Main() {
   const {isAuthenticated, loading, task} = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  console.log('@#@#@#', task);
+  // console.log('@#@#@#', task);
   useEffect(() => {
-    console.log('loading', loading);
+    // console.log('loading', loading);
     dispatch(loadUser());
   }, [dispatch]);
 
